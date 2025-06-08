@@ -12,12 +12,12 @@
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
@@ -34,7 +34,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-foreground: 222.2 84% 4.9%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -45,17 +45,20 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --ring: 224.3 76.3% 94.1%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+    overflow-x: hidden;
   }
 }
 
@@ -63,6 +66,40 @@
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600;
   }
+}
+
+/* Eliminar completamente las líneas de separación */
+section {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+section + section {
+  margin-top: 0 !important;
+  border-top: none !important;
+}
+
+/* Asegurar que todo el texto sea blanco y visible */
+.text-white {
+  color: #ffffff !important;
+}
+
+.text-white\/90 {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Botones con texto completamente visible */
+button {
+  font-weight: 600 !important;
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.font-medium {
+  font-weight: 500 !important;
 }
 
 /* Animaciones */
@@ -96,6 +133,26 @@
   }
 }
 
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+  }
+}
+
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
@@ -106,6 +163,14 @@
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
 /* Scrollbar personalizado */
@@ -119,11 +184,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-muted-foreground/30 rounded-full;
+  background: hsl(var(--primary));
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted-foreground/50;
+  background: hsl(var(--primary) / 0.8);
 }
 
 /* Estilos para dispositivos móviles */
@@ -141,10 +207,15 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.gradient-bg {
-  background: linear-gradient(-45deg, #3b82f6, #1d4ed8, #2563eb, #1e40af);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+.glass-dark {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Transiciones suaves */
+* {
+  transition: all 0.2s ease-in-out;
 }
 
 /* Button Effects */
@@ -171,7 +242,7 @@
 
 .btn-glow:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Card Effects */
@@ -180,8 +251,8 @@
 }
 
 .card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .dark .card-hover:hover {
@@ -250,7 +321,6 @@
     display: none;
   }
 
-  /* Mobile specific adjustments */
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -280,7 +350,6 @@
     display: none;
   }
 
-  /* Extra small screens */
   .py-20 {
     padding-top: 3rem;
     padding-bottom: 3rem;
@@ -301,7 +370,6 @@
 }
 
 @media (max-width: 475px) {
-  /* Extra small screens */
   .text-6xl {
     font-size: 2.5rem;
   }
@@ -385,7 +453,6 @@
     transform: none;
   }
 
-  /* Increase touch targets */
   button {
     min-height: 44px;
     min-width: 44px;
@@ -419,25 +486,6 @@
   50% {
     background-size: 200% 200%;
     background-position: right center;
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
-  }
-  100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
   }
 }
 
@@ -505,13 +553,11 @@ pre code {
   }
 }
 
-/* Focus visible for better keyboard navigation */
-.focus-visible:focus {
+*:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
 
-/* Better contrast for links */
 a {
   color: hsl(var(--primary));
   text-decoration: none;
@@ -521,13 +567,11 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Improved button states */
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Better form field styling */
 input:focus,
 select:focus,
 textarea:focus {

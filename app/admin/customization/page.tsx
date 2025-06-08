@@ -22,25 +22,53 @@ import {
   Brush,
   Layout,
   Type,
-  ImageIcon,
-  Monitor,
   Sparkles,
+  Home,
+  Settings,
 } from "lucide-react"
 
 export default function CustomizationPage() {
   const [settings, setSettings] = useState({
     // Branding
     siteName: "QiangNet",
-    siteDescription: "Sistema de gestión de servidor doméstico",
+    siteDescription:
+      "La plataforma más avanzada para gestionar tu servidor doméstico. Seguridad empresarial, diseño profesional, control total.",
     logoUrl: "",
     faviconUrl: "",
+
+    // Homepage Content
+    heroTitle: "QiangNet",
+    heroSubtitle:
+      "La plataforma más avanzada para gestionar tu servidor doméstico. Seguridad empresarial, diseño profesional, control total.",
+    primaryButtonText: "Acceder al Sistema",
+    secondaryButtonText: "Crear Cuenta",
+    primaryButtonLink: "/login",
+    secondaryButtonLink: "/register",
+
+    // Features Section
+    featuresTitle: "Características Profesionales",
+    featuresSubtitle: "Diseñado para profesionales que exigen lo mejor en gestión de servidores",
+    showFeatures: true,
+
+    // CTA Section
+    ctaTitle: "¿Listo para el siguiente nivel?",
+    ctaSubtitle: "Únete a los profesionales que confían en QiangNet para gestionar sus servidores",
+    ctaButtonText: "Comenzar Ahora",
+    ctaButtonLink: "/register",
+
+    // Footer
+    footerText: "© 2024 QiangNet. Todos los derechos reservados.",
+    footerSubtext: "Diseñado para profesionales exigentes",
 
     // Colors
     primaryColor: "#3b82f6",
     secondaryColor: "#64748b",
     accentColor: "#10b981",
-    backgroundColor: "#ffffff",
-    textColor: "#1f2937",
+    backgroundColor: "#0f172a",
+    textColor: "#ffffff",
+    gradientFrom: "#0f172a",
+    gradientVia: "#7c3aed",
+    gradientTo: "#0f172a",
 
     // Typography
     fontFamily: "Inter",
@@ -54,14 +82,8 @@ export default function CustomizationPage() {
     borderRadius: "8",
 
     // Theme
-    defaultTheme: "light",
+    defaultTheme: "dark",
     allowThemeSwitch: true,
-
-    // Homepage
-    heroTitle: "Tu Servidor Doméstico, Simplificado",
-    heroSubtitle: "Gestiona todas tus aplicaciones self-hosted desde una interfaz moderna, segura y fácil de usar.",
-    showStats: true,
-    showFeatures: true,
 
     // Dashboard
     dashboardLayout: "grid",
@@ -76,6 +98,12 @@ export default function CustomizationPage() {
     // Advanced
     customCSS: "",
     customJS: "",
+
+    // Particles
+    particlesEnabled: true,
+    particlesSpeed: 0.5,
+    particlesCount: 50,
+    particlesColor: "#3b82f6",
   })
 
   const [previewMode, setPreviewMode] = useState(false)
@@ -93,14 +121,34 @@ export default function CustomizationPage() {
     // Resetear a valores por defecto
     setSettings({
       siteName: "QiangNet",
-      siteDescription: "Sistema de gestión de servidor doméstico",
+      siteDescription:
+        "La plataforma más avanzada para gestionar tu servidor doméstico. Seguridad empresarial, diseño profesional, control total.",
       logoUrl: "",
       faviconUrl: "",
+      heroTitle: "QiangNet",
+      heroSubtitle:
+        "La plataforma más avanzada para gestionar tu servidor doméstico. Seguridad empresarial, diseño profesional, control total.",
+      primaryButtonText: "Acceder al Sistema",
+      secondaryButtonText: "Crear Cuenta",
+      primaryButtonLink: "/login",
+      secondaryButtonLink: "/register",
+      featuresTitle: "Características Profesionales",
+      featuresSubtitle: "Diseñado para profesionales que exigen lo mejor en gestión de servidores",
+      showFeatures: true,
+      ctaTitle: "¿Listo para el siguiente nivel?",
+      ctaSubtitle: "Únete a los profesionales que confían en QiangNet para gestionar sus servidores",
+      ctaButtonText: "Comenzar Ahora",
+      ctaButtonLink: "/register",
+      footerText: "© 2024 QiangNet. Todos los derechos reservados.",
+      footerSubtext: "Diseñado para profesionales exigentes",
       primaryColor: "#3b82f6",
       secondaryColor: "#64748b",
       accentColor: "#10b981",
-      backgroundColor: "#ffffff",
-      textColor: "#1f2937",
+      backgroundColor: "#0f172a",
+      textColor: "#ffffff",
+      gradientFrom: "#0f172a",
+      gradientVia: "#7c3aed",
+      gradientTo: "#0f172a",
       fontFamily: "Inter",
       fontSize: "16",
       headingFont: "Inter",
@@ -108,12 +156,8 @@ export default function CustomizationPage() {
       headerStyle: "modern",
       cardStyle: "elevated",
       borderRadius: "8",
-      defaultTheme: "light",
+      defaultTheme: "dark",
       allowThemeSwitch: true,
-      heroTitle: "Tu Servidor Doméstico, Simplificado",
-      heroSubtitle: "Gestiona todas tus aplicaciones self-hosted desde una interfaz moderna, segura y fácil de usar.",
-      showStats: true,
-      showFeatures: true,
       dashboardLayout: "grid",
       showWelcomeMessage: true,
       showQuickActions: true,
@@ -122,6 +166,10 @@ export default function CustomizationPage() {
       allowFavorites: true,
       customCSS: "",
       customJS: "",
+      particlesEnabled: true,
+      particlesSpeed: 0.5,
+      particlesCount: 50,
+      particlesColor: "#3b82f6",
     })
   }
 
@@ -198,9 +246,9 @@ export default function CustomizationPage() {
             <div>
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
                 <Palette className="h-10 w-10 text-primary" />
-                Personalización
+                Personalización Completa
               </h1>
-              <p className="text-muted-foreground text-lg">Personaliza la apariencia y comportamiento de QiangNet</p>
+              <p className="text-muted-foreground text-lg">Controla cada aspecto de la interfaz de QiangNet</p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => setPreviewMode(!previewMode)}>
@@ -228,8 +276,12 @@ export default function CustomizationPage() {
           </div>
         </motion.div>
 
-        <Tabs defaultValue="branding" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6">
+        <Tabs defaultValue="homepage" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-7">
+            <TabsTrigger value="homepage" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Página Principal</span>
+            </TabsTrigger>
             <TabsTrigger value="branding" className="flex items-center gap-2">
               <Brush className="h-4 w-4" />
               <span className="hidden sm:inline">Marca</span>
@@ -246,21 +298,198 @@ export default function CustomizationPage() {
               <Layout className="h-4 w-4" />
               <span className="hidden sm:inline">Layout</span>
             </TabsTrigger>
-            <TabsTrigger value="pages" className="flex items-center gap-2">
-              <Monitor className="h-4 w-4" />
-              <span className="hidden sm:inline">Páginas</span>
-            </TabsTrigger>
-            <TabsTrigger value="advanced" className="flex items-center gap-2">
-              <ImageIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Avanzado</span>
-            </TabsTrigger>
             <TabsTrigger value="particles" className="flex items-center gap-2">
               <Sparkles className="h-4 w-4" />
               <span className="hidden sm:inline">Partículas</span>
             </TabsTrigger>
+            <TabsTrigger value="advanced" className="flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              <span className="hidden sm:inline">Avanzado</span>
+            </TabsTrigger>
           </TabsList>
 
-          {/* Branding Tab */}
+          {/* Homepage Content Tab */}
+          <TabsContent value="homepage">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Contenido de la Página Principal</CardTitle>
+                  <CardDescription>Personaliza todos los textos y enlaces de la homepage</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Título Principal</label>
+                      <Input
+                        value={settings.heroTitle}
+                        onChange={(e) => setSettings({ ...settings, heroTitle: e.target.value })}
+                        placeholder="QiangNet"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Subtítulo</label>
+                      <Textarea
+                        value={settings.heroSubtitle}
+                        onChange={(e) => setSettings({ ...settings, heroSubtitle: e.target.value })}
+                        placeholder="Descripción de tu plataforma"
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Texto Botón Primario</label>
+                      <Input
+                        value={settings.primaryButtonText}
+                        onChange={(e) => setSettings({ ...settings, primaryButtonText: e.target.value })}
+                        placeholder="Acceder al Sistema"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Enlace Botón Primario</label>
+                      <Input
+                        value={settings.primaryButtonLink}
+                        onChange={(e) => setSettings({ ...settings, primaryButtonLink: e.target.value })}
+                        placeholder="/login"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Texto Botón Secundario</label>
+                      <Input
+                        value={settings.secondaryButtonText}
+                        onChange={(e) => setSettings({ ...settings, secondaryButtonText: e.target.value })}
+                        placeholder="Crear Cuenta"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Enlace Botón Secundario</label>
+                      <Input
+                        value={settings.secondaryButtonLink}
+                        onChange={(e) => setSettings({ ...settings, secondaryButtonLink: e.target.value })}
+                        placeholder="/register"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Sección de Características</CardTitle>
+                  <CardDescription>Configura la sección de features</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="text-sm font-medium">Mostrar Sección de Características</label>
+                      <p className="text-xs text-muted-foreground">Activar/desactivar toda la sección</p>
+                    </div>
+                    <Switch
+                      checked={settings.showFeatures}
+                      onCheckedChange={(checked) => setSettings({ ...settings, showFeatures: checked })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Título de Características</label>
+                    <Input
+                      value={settings.featuresTitle}
+                      onChange={(e) => setSettings({ ...settings, featuresTitle: e.target.value })}
+                      placeholder="Características Profesionales"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Subtítulo de Características</label>
+                    <Textarea
+                      value={settings.featuresSubtitle}
+                      onChange={(e) => setSettings({ ...settings, featuresSubtitle: e.target.value })}
+                      placeholder="Descripción de las características"
+                      rows={2}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Sección Call-to-Action</CardTitle>
+                  <CardDescription>Personaliza la sección final de llamada a la acción</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Título CTA</label>
+                    <Input
+                      value={settings.ctaTitle}
+                      onChange={(e) => setSettings({ ...settings, ctaTitle: e.target.value })}
+                      placeholder="¿Listo para el siguiente nivel?"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Subtítulo CTA</label>
+                    <Textarea
+                      value={settings.ctaSubtitle}
+                      onChange={(e) => setSettings({ ...settings, ctaSubtitle: e.target.value })}
+                      placeholder="Descripción motivacional"
+                      rows={2}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Texto Botón CTA</label>
+                      <Input
+                        value={settings.ctaButtonText}
+                        onChange={(e) => setSettings({ ...settings, ctaButtonText: e.target.value })}
+                        placeholder="Comenzar Ahora"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Enlace Botón CTA</label>
+                      <Input
+                        value={settings.ctaButtonLink}
+                        onChange={(e) => setSettings({ ...settings, ctaButtonLink: e.target.value })}
+                        placeholder="/register"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Footer</CardTitle>
+                  <CardDescription>Personaliza el pie de página</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Texto Principal del Footer</label>
+                    <Input
+                      value={settings.footerText}
+                      onChange={(e) => setSettings({ ...settings, footerText: e.target.value })}
+                      placeholder="© 2024 QiangNet. Todos los derechos reservados."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Subtexto del Footer</label>
+                    <Input
+                      value={settings.footerSubtext}
+                      onChange={(e) => setSettings({ ...settings, footerSubtext: e.target.value })}
+                      placeholder="Diseñado para profesionales exigentes"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Resto de tabs existentes... */}
           <TabsContent value="branding">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
@@ -311,12 +540,6 @@ export default function CustomizationPage() {
                       placeholder="https://ejemplo.com/favicon.ico"
                     />
                   </div>
-                  <div className="p-4 bg-muted rounded-lg">
-                    <p className="text-sm text-muted-foreground">
-                      💡 <strong>Tip:</strong> Usa imágenes en formato PNG para el logo y ICO para el favicon. Tamaños
-                      recomendados: Logo 200x50px, Favicon 32x32px.
-                    </p>
-                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -357,26 +580,30 @@ export default function CustomizationPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Vista Previa de Colores</CardTitle>
-                  <CardDescription>Visualiza cómo se verán los colores</CardDescription>
+                  <CardTitle>Colores de Fondo</CardTitle>
+                  <CardDescription>Personaliza los gradientes de fondo</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="p-4 rounded-lg" style={{ backgroundColor: settings.primaryColor, color: "white" }}>
-                      <h3 className="font-semibold">Color Primario</h3>
-                      <p className="text-sm opacity-90">Botones principales y enlaces</p>
-                    </div>
-                    <div
-                      className="p-4 rounded-lg"
-                      style={{ backgroundColor: settings.secondaryColor, color: "white" }}
-                    >
-                      <h3 className="font-semibold">Color Secundario</h3>
-                      <p className="text-sm opacity-90">Elementos secundarios</p>
-                    </div>
-                    <div className="p-4 rounded-lg" style={{ backgroundColor: settings.accentColor, color: "white" }}>
-                      <h3 className="font-semibold">Color de Acento</h3>
-                      <p className="text-sm opacity-90">Destacados y notificaciones</p>
-                    </div>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Gradiente Desde</label>
+                    <ColorPicker
+                      value={settings.gradientFrom}
+                      onChange={(color) => setSettings({ ...settings, gradientFrom: color })}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Gradiente Intermedio</label>
+                    <ColorPicker
+                      value={settings.gradientVia}
+                      onChange={(color) => setSettings({ ...settings, gradientVia: color })}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Gradiente Hasta</label>
+                    <ColorPicker
+                      value={settings.gradientTo}
+                      onChange={(color) => setSettings({ ...settings, gradientTo: color })}
+                    />
                   </div>
                 </CardContent>
               </Card>

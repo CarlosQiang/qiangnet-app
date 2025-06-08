@@ -1,136 +1,193 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/Button"
-import { ArrowRight, Server, Shield, Zap, Layers, Lock } from "lucide-react"
+"use client"
 
-export default function Home() {
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/AuthContext"
+import { Button } from "@/components/ui/Button"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Shield, Server, Users, Zap, Lock, Globe } from "lucide-react"
+import Link from "next/link"
+
+export default function HomePage() {
+  const { isAuthenticated, isLoading } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.push("/dashboard")
+    }
+  }, [isAuthenticated, isLoading, router])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)]">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Hero Section */}
-      <section className="py-20 md:py-28 relative">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-            Gestiona tu servidor doméstico con facilidad
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            QiangNet te permite controlar y administrar todas tus aplicaciones y servicios desde un solo lugar, de forma
-            segura y eficiente.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/login">
-              <Button size="lg" className="w-full sm:w-auto">
-                Iniciar sesión
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/register">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Registrarse
-              </Button>
-            </Link>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center">
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-75 animate-pulse" />
+                <div className="relative bg-white/10 backdrop-blur-sm rounded-full p-6 border border-white/20">
+                  <Server className="h-16 w-16 text-white" />
+                </div>
+              </div>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                QiangNet
+              </span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
+              La plataforma más avanzada para gestionar tu servidor doméstico. Seguridad empresarial, diseño
+              profesional, control total.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <Link href="/login" className="w-full">
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-8 py-4 text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 border-0"
+                >
+                  Acceder al Sistema
+                </Button>
+              </Link>
+              <Link href="/register" className="w-full">
+                <Button
+                  size="lg"
+                  className="w-full bg-transparent border-2 border-white text-white font-bold hover:bg-white hover:text-slate-900 px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300"
+                >
+                  Crear Cuenta
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-muted/50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Características principales</h2>
+      {/* Features Section - Sin línea de separación */}
+      <section className="py-20 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">Características Profesionales</h2>
+            <p className="text-xl text-white max-w-2xl mx-auto font-medium">
+              Diseñado para profesionales que exigen lo mejor en gestión de servidores
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Server className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Panel centralizado</h3>
-              <p className="text-muted-foreground">
-                Accede a todas tus aplicaciones y servicios desde un único panel de control intuitivo y personalizable.
-              </p>
-            </div>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-white font-bold">Seguridad Avanzada</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
+                  Autenticación multifactor, encriptación end-to-end y monitoreo en tiempo real
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-            {/* Feature 2 */}
-            <div className="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Shield className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Seguridad avanzada</h3>
-              <p className="text-muted-foreground">
-                Protege tus aplicaciones con autenticación de múltiples factores, control de acceso y cifrado de datos.
-              </p>
-            </div>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Zap className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-white font-bold">Alto Rendimiento</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
+                  Optimizado para máximo rendimiento con tecnologías de última generación
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-            {/* Feature 3 */}
-            <div className="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Zap className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Rendimiento optimizado</h3>
-              <p className="text-muted-foreground">
-                Monitoriza y optimiza el rendimiento de tus servicios con estadísticas en tiempo real y alertas
-                personalizadas.
-              </p>
-            </div>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-white font-bold">Gestión de Usuarios</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
+                  Control granular de permisos y roles con sistema de aprobación avanzado
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-            {/* Feature 4 */}
-            <div className="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Layers className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Gestión de usuarios</h3>
-              <p className="text-muted-foreground">
-                Administra permisos y roles de usuarios para controlar quién puede acceder a cada servicio y aplicación.
-              </p>
-            </div>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Lock className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-white font-bold">Privacidad Total</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
+                  Tus datos permanecen en tu servidor. Sin telemetría, sin seguimiento
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-            {/* Feature 5 */}
-            <div className="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Lock className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Acceso seguro</h3>
-              <p className="text-muted-foreground">
-                Accede a tus servicios de forma segura desde cualquier lugar con conexiones cifradas y autenticación
-                robusta.
-              </p>
-            </div>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Globe className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-white font-bold">Acceso Remoto</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
+                  Accede a tus aplicaciones desde cualquier lugar con máxima seguridad
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-            {/* Feature 6 */}
-            <div className="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-6 w-6 text-primary"
-                >
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Personalización visual</h3>
-              <p className="text-muted-foreground">
-                Personaliza la apariencia de tu panel con temas, fondos de partículas y opciones de visualización
-                avanzadas.
-              </p>
-            </div>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Server className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-white font-bold">Monitoreo Avanzado</CardTitle>
+                <CardDescription className="text-white/90 font-medium">
+                  Dashboard completo con métricas en tiempo real y alertas inteligentes
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/20 to-primary/5">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">¿Listo para empezar?</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Comienza a gestionar tu servidor doméstico de forma eficiente y segura con QiangNet.
+      <section className="py-20 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-white mb-6">¿Listo para el siguiente nivel?</h2>
+          <p className="text-xl text-white mb-8 font-medium">
+            Únete a los profesionales que confían en QiangNet para gestionar sus servidores
           </p>
-          <Link href="/register">
-            <Button size="lg">Crear una cuenta</Button>
+          <Link href="/register" className="inline-block">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-12 py-4 text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 border-0"
+            >
+              Comenzar Ahora
+            </Button>
           </Link>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center text-white">
+            <p className="font-medium">&copy; 2024 QiangNet. Todos los derechos reservados.</p>
+            <p className="mt-2 text-sm font-medium">Diseñado para profesionales exigentes</p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

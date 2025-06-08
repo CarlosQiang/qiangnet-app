@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_DB: qiangnet_db
       POSTGRES_USER: qiangnet_user
-      POSTGRES_PASSWORD: qiangnet_secure_2024
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-qiangnet_secure_2024}
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -37,15 +37,11 @@ services:
       DB_PORT: 5432
       DB_NAME: qiangnet_db
       DB_USER: qiangnet_user
-      DB_PASSWORD: qiangnet_secure_2024
-      JWT_SECRET: qiangnet_jwt_super_secret_key_2024_production_${RANDOM:-12345}
+      DB_PASSWORD: ${DB_PASSWORD:-qiangnet_secure_2024}
+      JWT_SECRET: ${JWT_SECRET:-qiangnet_jwt_super_secret_key_2024_production}
       JWT_EXPIRES_IN: 24h
       JWT_REFRESH_EXPIRES_IN: 7d
-      ADMIN_EMAIL: admin@qiangnet.local
-      ADMIN_PASSWORD: Admin123!@#
       CORS_ORIGIN: http://localhost:3000,http://frontend:3000
-      RATE_LIMIT_WINDOW_MS: 900000
-      RATE_LIMIT_MAX_REQUESTS: 100
     ports:
       - "3001:3001"
     depends_on:
@@ -63,7 +59,7 @@ services:
       - api_logs:/app/logs
       - api_uploads:/app/uploads
 
-  qiangnet-frontend:
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
@@ -73,13 +69,14 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://192.168.8.200:3001
+      - NEXT_PUBLIC_API_URL=http://api:3001/api
       - NEXT_PUBLIC_APP_NAME=QiangNet
       - NEXT_PUBLIC_ENVIRONMENT=production
+      - JWT_SECRET=${JWT_SECRET:-qiangnet_jwt_super_secret_key_2024_production}
     networks:
       - qiangnet-network
     depends_on:
-      - qiangnet-api
+      - api
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s
@@ -87,24 +84,27 @@ services:
       retries: 3
       start_period: 40s
 
-  # Servicio opcional de nginx para proxy reverso
   nginx:
     image: nginx:alpine
     container_name: qiangnet-nginx
-    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_cache:/var/cache/nginx
     depends_on:
-      - qiangnet-frontend
-      - qiangnet-api
+      - frontend
+      - api
+    restart: unless-stopped
     networks:
       - qiangnet-network
-    profiles:
-      - production
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   postgres_data:
@@ -113,7 +113,9 @@ volumes:
     driver: local
   api_uploads:
     driver: local
+  nginx_cache:
+    driver: local
 
 networks:
   qiangnet-network:
-    external: true
+    driver: bridge

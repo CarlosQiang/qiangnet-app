@@ -9,14 +9,14 @@ const nextConfig = {
   // Configuración de imágenes
   images: {
     domains: ["localhost", "127.0.0.1", "api"],
-    unoptimized: false,
+    unoptimized: true,
     formats: ["image/webp", "image/avif"],
   },
 
   // Variables de entorno
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api",
-    NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || "QiangNet",
+    NEXT_PUBLIC_APP_NAME: "QiangNet",
     NEXT_PUBLIC_APP_VERSION: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
     NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT || "development",
   },
